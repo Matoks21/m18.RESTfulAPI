@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Search History</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        .video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+        .video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .content-container {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.5);
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        h2 {
+            margin-top: 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid white;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+          .logout-button, .history-button, .menu-button , .admin-button {
+            text-transform: uppercase;
+            color: white;
+            border: 1px solid white;
+            padding: 5px 10px;
+            text-decoration: none;
+            margin-top: 10px;
+            display: inline-block;
+            animation: fadeIn 2s forwards;
+        }
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="video-container">
+    <video autoplay muted loop>
+        <source src="https://s3-us-west-2.amazonaws.com/converterpoint-22/encodings/49a653af96b87037e8f32cc3c2f876bf.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</div>
+
+<div class="content-container">
+    <h2>Search History</h2>
+    <a href="/library/search-history" class="history-button animated-link">Search History</a>
+    <a href="/logout" class="logout-button animated-link">Logout</a>
+    <a href="/library/menu" class="menu-button animated-link">Library Menu</a>
+    <div th:if="${isAdmin}">
+        <a href="/user" class="admin-button animated-link">Admin Page</a>
+    </div>
+    <table>
+        <thead>
+        <tr>
+            <th>Personal Id</th>
+            <th>First Name</th>
+            <th>Username</th>
+            <th>Search Type</th>
+            <th>Search Term</th>
+            <th>Timestamp</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="history : ${searchHistory}">
+            <td th:text="${history.userId}">Personal Id</td>
+            <td th:text="${history.firstName}">First Name</td>
+            <td th:text="${history.username}">Username</td>
+            <td th:text="${history.searchType}">Search Type</td>
+            <td th:text="${history.searchTerm}">Search Term</td>
+            <td th:text="${history.timestamp}">Timestamp</td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+</body>
+</html>
+
