@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,7 +17,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 
 @RequiredArgsConstructor
 @Service
@@ -72,8 +70,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         };
     }
 
-
-    private UserDate getByIdOrNull(String email) {
+    public UserDate getByIdOrNull(String email) {
         String sql =
                 "SELECT T1.password, STRING_AGG(T3.name,',') AS authority " +
                         "FROM \"user\" AS T1 " +
@@ -88,8 +85,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         );
     }
 
-
-    private static class UserDataMapper implements RowMapper<UserDate> {
+    public static class UserDataMapper implements RowMapper<UserDate> {
         @Override
         public UserDate mapRow(ResultSet rs, int rowNum) throws SQLException {
             return UserDate.builder()
@@ -101,7 +97,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Builder
     @Data
-    private static class UserDate {
+    public   static class UserDate {
         private String password;
         private String authority;
     }

@@ -58,7 +58,7 @@ public class AuthorController {
         return "author-details";
     }
 
-    private void saveSearchHistory(String searchTerm, String searchType) {
+    public void saveSearchHistory(String searchTerm, String searchType) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
         User user = userRepository.findByEmail(email);
