@@ -18,13 +18,14 @@ jobs:
         with:
           java-version: '17'
           distribution: 'adopt'
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '20'
-  git status
-          - name: Build with Gradle
-            run: ./gradlew build
 
-          - name: Run tests
-            run: ./gradlew test
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: Run tests
+        run: ./gradlew test
