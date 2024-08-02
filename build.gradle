@@ -2,6 +2,8 @@ plugins {
 	id 'org.springframework.boot' version '2.7.3'
 	id 'io.spring.dependency-management' version '1.0.13.RELEASE'
 	id 'java'
+	id 'application'
+	id 'jacoco'
 }
 
 group = 'goit'
@@ -19,10 +21,8 @@ repositories {
 }
 
 dependencies {
-	implementation 'io.swagger.core.v3:swagger-annotations:2.1.10'
-
-	implementation 'org.springdoc:springdoc-openapi-ui:1.6.5'
-	implementation 'javax.validation:validation-api:2.0.1.Final'
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.5' // Додатковий модуль для UI
+	implementation 'javax.validation:validation-api:2.0.1.Final' // Якщо потрібна валідація вхідних даних
 
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
@@ -32,6 +32,7 @@ dependencies {
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
 	implementation 'com.fasterxml.jackson.core:jackson-annotations'
 	implementation 'com.fasterxml.jackson.core:jackson-core'
+	implementation 'junit:junit:4.13.1'
 	compileOnly 'jakarta.servlet:jakarta.servlet-api:6.1.0'
 	implementation 'com.h2database:h2'
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-hibernate5:2.13.0'
@@ -48,13 +49,65 @@ dependencies {
 	implementation 'org.apache.commons:commons-lang3:3.12.0'
 
 
-	implementation 'org.json:json:20210307'
+	implementation 'org.json:json:20210307'  // Актуальну версію можна перевірити на сайті Maven Central
 	implementation 'org.jsoup:jsoup:1.14.2'
 
 	implementation 'org.springframework.security:spring-security-config:5.7.3'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation 'org.mockito:mockito-core'
+	testImplementation 'org.junit.jupiter:junit-jupiter-api'
+	testImplementation 'org.junit.jupiter:junit-jupiter-engine'
 
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+jar {
+	manifest {
+		attributes(
+				'Main-Class': 'Application'
+		)
+	}
+	from {
+		configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+	}
+
+
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+}
+
+
+application {
+	// Define the main class for the application.
+	mainClass = 'Application'
+}
+
+
+
+test {
+	// Enable JUnit 5 (Gradle 4.6+).
+	useJUnitPlatform()
+
+	// Always run tests, even when nothing changed.
+	dependsOn 'cleanTest'
+
+	// Show test results.
+	testLogging {
+		events "passed", "skipped", "failed"
+	}
+	finalizedBy jacocoTestReport
+	jacoco {
+		destinationFile = layout.buildDirectory.file('jacoco/jacocoTest.exec').get().asFile
+		classDumpDir = layout.buildDirectory.dir('jacoco/classpathdumps').get().asFile
+	}
+}
+
+
+jacocoTestReport {
+	dependsOn test // tests are required to run before generating the report
 }

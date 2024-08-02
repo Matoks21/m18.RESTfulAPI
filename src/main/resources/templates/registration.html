@@ -7,11 +7,11 @@
 <body>
 <div class="container mt-3">
     <h2>Registration Form</h2>
-    <form id="register-form" th:action="@{/register}" method="post">
+    <form action="#" th:action="@{/register}" th:object="${user}" method="post">
         <div class="mb-3">
-            <label for="email" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="email" name="email" required>
-            <div th:if="${#fields.hasErrors('user.email')}" class="text-danger" th:errors="*{email}">Email Error</div>
+            <label for="email">Email:</label>
+            <input type="text" class="form-control"  id="email" th:field="*{email}" />
+            <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Invalid email</p>
         </div>
         <div class="mb-3">
             <label for="password" class="form-label">Password</label>

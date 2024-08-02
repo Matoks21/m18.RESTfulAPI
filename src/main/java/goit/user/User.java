@@ -57,7 +57,8 @@ public class User {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Role> roles = new HashSet<>();
 
-
+    public <E> User(UUID randomUUID, String s, String password, String john, String doe, HashSet<E> es) {
+    }
 
     public User() {
     }
